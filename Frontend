@@ -1,0 +1,38 @@
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import SwapForm from './components/SwapForm';
+import ZENToken from '../artifacts/contracts/ZENToken.sol/ZENToken.json';
+import SwapContract from '../artifacts/contracts/SwapContract.sol/SwapContract.json';
+
+function App() {
+  const [account, setAccount] = useState(null);
+  const [zenToken, setZenToken] = useState(null);
+  const [swapContract, setSwapContract] = useState(null);
+
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const account = await signer.getAddress();
+      setAccount(account);
+
+      // Initialize contracts (replace with deployed addresses)
+      const zenTokenContract = new ethers.Contract("0x...ZENTokenAddress", ZENToken.abi, signer);
+      const swapContractInstance = new ethers.Contract("0x...SwapContractAddress", SwapContract.abi, signer);
+      setZenToken(zenTokenContract);
+      setSwapContract(swapContractInstance);
+    }
+  };
+
+  return (
+    <div>
+      <h1>ZenChain Token Swap Demo</h1>
+      <button onClick={connectWallet}>Connect MetaMask</button>
+      {account && <p>Connected: {account}</p>}
+      {swapContract && <SwapForm swapContract={swapContract} />}
+    </div>
+  );
+}
+
+export default App;
