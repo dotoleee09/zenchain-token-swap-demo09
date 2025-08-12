@@ -14,3 +14,27 @@ module.exports = {
     },
   },
 };
+.evn
+ZENCHAIN_RPC_URL=https://testnet.zenchain.io
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/your-api-key
+PRIVATE_KEY=your-metamask-private-key
+
+script/deploy.js
+const hre = require("hardhat");
+
+async function main() {
+  const ZENToken = await hre.ethers.getContractFactory("ZENToken");
+  const zenToken = await ZENToken.deploy(1000000); // 1M tokens
+  await zenToken.deployed();
+  console.log("ZENToken deployed to:", zenToken.address);
+
+  const SwapContract = await hre.ethers.getContractFactory("SwapContract");
+  const swapContract = await SwapContract.deploy(zenToken.address);
+  await swapContract.deployed();
+  console.log("SwapContract deployed to:", swapContract.address);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
