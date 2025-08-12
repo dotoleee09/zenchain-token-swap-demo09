@@ -1,0 +1,22 @@
+zenchain-token-swap-demo/
+├── contracts/                # Solidity smart contracts
+│   ├── ZENToken.sol         # ERC-20 token for ZenChain
+│   ├── SwapContract.sol     # Cross-chain swap logic
+├── scripts/                 # Deployment scripts
+│   ├── deploy.js
+├── src/                     # React frontend
+│   ├── App.js
+│   ├── index.js
+│   ├── components/
+│   │   ├── SwapForm.js
+├── public/                  # Static assets
+├── tests/                   # Smart contract tests
+│   ├── test_swap.js
+├── docs/                    # Documentation
+│   ├── setup.md
+│   ├── api.md
+├── README.md                # Project overview
+├── hardhat.config.js        # Hardhat configuration
+├── package.json             # Node.js dependencies
+├── .gitignore               # Ignored files
+└── LICENSE                  # MIT License
