@@ -41,3 +41,34 @@ contract ZENToken {
         return true;
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "./ZENToken.sol";
+
+contract SwapContract {
+    ZENToken public zenToken;
+    address public owner;
+    mapping(address => uint256) public swapHistory;
+
+    event Swap(address indexed user, uint256 zenAmount, uint256 ethAmount);
+
+    constructor(address _zenToken) {
+        zenToken = ZENToken(_zenToken);
+        owner = msg.sender;
+    }
+
+    function swapTokens(uint256 zenAmount) external {
+        require(zenToken.balanceOf(msg.sender) >= zenAmount, "Insufficient ZENT balance");
+        require(zenToken.transferFrom(msg.sender, address(this), zenAmount), "Transfer failed");
+
+        // Placeholder: Cross-chain swap logic (in production, integrate with ZenChain's CCIM)
+        uint256 ethAmount = zenAmount; // 1:1 swap for demo purposes
+        swapHistory[msg.sender] += zenAmount;
+        emit Swap(msg.sender, zenAmount, ethAmount);
+    }
+
+    function getSwapHistory(address user) external view returns (uint256) {
+        return swapHistory[user];
+    }
+}
